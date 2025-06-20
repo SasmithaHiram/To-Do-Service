@@ -4,6 +4,7 @@ import com.sasmitha.todo.dto.ToDo;
 import com.sasmitha.todo.service.ToDoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +16,15 @@ import java.util.Optional;
 @RequestMapping("/api/todo")
 @CrossOrigin
 @RequiredArgsConstructor
+@Slf4j
 public class ToDoController {
     private final ToDoService toDoService;
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> create(@Valid @RequestBody ToDo toDo) {
+        log.info("Creating new ToDO: {}", toDo);
+
         boolean isCreated = toDoService.create(toDo);
 
         if (isCreated) {

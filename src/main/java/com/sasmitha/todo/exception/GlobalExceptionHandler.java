@@ -13,4 +13,11 @@ public class GlobalExceptionHandler {
         errorResponse.setMessage(toDoNotFoundException.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(InvalidInputException.class)
+    ResponseEntity<ErrorResponse> handleInvalidInputException(InvalidInputException invalidInputException) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setMessage(invalidInputException.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }

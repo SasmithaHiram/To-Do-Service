@@ -2,6 +2,7 @@ package com.sasmitha.todo.service.impl;
 
 import com.sasmitha.todo.dto.ToDo;
 import com.sasmitha.todo.entity.ToDoEntity;
+import com.sasmitha.todo.exception.InvalidInputException;
 import com.sasmitha.todo.exception.ToDoNotFoundException;
 import com.sasmitha.todo.repository.ToDoRepository;
 import com.sasmitha.todo.service.ToDoService;
@@ -23,11 +24,9 @@ public class ToDoServiceImpl implements ToDoService {
     private final ModelMapper modelMapper;
 
     @Override
-    public boolean create(ToDo toDo) {
-        log.info("Creating new ToDO: {}", toDo);
-
-        if (toDo == null) {
-            return false;
+    public boolean create(ToDo toDo) throws InvalidInputException {
+        if (toDo == null || toDo.getTitle() == null || toDo.getTitle().isBlank()) {
+            throw new InvalidInputException("Title cannot be null or blank");
         } else {
             toDoRepository.save(modelMapper.map(toDo, ToDoEntity.class));
             return true;
@@ -45,9 +44,9 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public boolean update(ToDo toDo) {
-        if (toDo == null || toDo.getId() == null) {
-            return false;
+    public boolean update(ToDo toDo) throws InvalidInputException {
+        if (toDo == null || toDo.getId() == null || toDo.getTitle() == null || toDo.getTitle().isBlank()) {
+            throw new InvalidInputException("Invalid ToDo input: ID and Title are required");
         }
 
         ToDoEntity existing = toDoRepository.findById(toDo.getId()).orElse(null);
