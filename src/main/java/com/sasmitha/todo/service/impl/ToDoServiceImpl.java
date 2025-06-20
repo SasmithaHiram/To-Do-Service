@@ -39,7 +39,7 @@ public class ToDoServiceImpl implements ToDoService {
             throw new InvalidInputException("Id cannot be null");
         }
         return toDoRepository.findById(id).map(toDoEntity -> modelMapper.map(toDoEntity, ToDo.class)).or(() -> {
-            throw new ToDoNotFoundException("No ToDo found with id: " +id);
+            throw new ToDoNotFoundException("No ToDo found with id: " + id);
         });
     }
 
@@ -49,7 +49,7 @@ public class ToDoServiceImpl implements ToDoService {
             throw new InvalidInputException("Title cannot be null or blank");
         }
         return toDoRepository.findByTitle(title).map(toDoEntity -> modelMapper.map(toDoEntity, ToDo.class)).or(() -> {
-            throw new ToDoNotFoundException("No ToDo found with title: " +title);
+            throw new ToDoNotFoundException("No ToDo found with title: " + title);
         });
     }
 
@@ -59,7 +59,7 @@ public class ToDoServiceImpl implements ToDoService {
             throw new InvalidInputException("Invalid ToDo input: ID and Title are required");
         }
 
-        ToDoEntity existing = toDoRepository.findById(toDo.getId()).orElse(null);
+        ToDoEntity existing = toDoRepository.findById(toDo.getId()).orElseThrow(() -> new InvalidInputException("ToDo not found with Id: " + toDo.getId()));
 
         if (existing == null) {
             return false;
@@ -77,7 +77,7 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public boolean delete(Long id) {
-        if (id==null) {
+        if (id == null) {
             return false;
         }
 
@@ -85,7 +85,7 @@ public class ToDoServiceImpl implements ToDoService {
             toDoRepository.deleteById(id);
             return true;
         }
-        return false;
+        throw new InvalidInputException("ToDo not found with Id: " +id);
     }
 
     @Override
