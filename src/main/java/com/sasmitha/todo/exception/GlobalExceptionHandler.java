@@ -11,6 +11,6 @@ public class GlobalExceptionHandler {
     ResponseEntity<ErrorResponse> handleToDoNotFoundException(ToDoNotFoundException toDoNotFoundException) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setMessage(toDoNotFoundException.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }

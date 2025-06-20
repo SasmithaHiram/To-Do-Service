@@ -43,7 +43,7 @@ public class ToDoController {
         }
     }
 
-    @GetMapping("/searchById/{title}")
+    @GetMapping("/searchByTitle/{title}")
     @ResponseStatus(HttpStatus.FOUND)
     public ResponseEntity<ToDo> searchByTitle(@PathVariable String title) {
         Optional<ToDo> searched = toDoService.searchByTitle(title);
@@ -62,7 +62,7 @@ public class ToDoController {
         boolean isUpdated = toDoService.update(toDo);
 
         if (isUpdated) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("ToDo has been updated successfully created");
+            return ResponseEntity.status(HttpStatus.OK).body("ToDo has been updated successfully created");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update ToDO");
         }
@@ -85,7 +85,7 @@ public class ToDoController {
     public ResponseEntity<List<ToDo>> getAllToDo() {
         List<ToDo> toDoList = toDoService.getAll();
 
-        if (toDoList == null || toDoList.isEmpty()) {
+        if (toDoList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
             return ResponseEntity.ok(toDoList);
