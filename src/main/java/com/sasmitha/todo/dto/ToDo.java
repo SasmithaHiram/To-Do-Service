@@ -3,8 +3,6 @@ package com.sasmitha.todo.dto;
 import com.sasmitha.todo.util.ToDoStatus;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Setter
 @Getter
 @AllArgsConstructor

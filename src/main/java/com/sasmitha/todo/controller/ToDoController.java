@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/todo")
 @CrossOrigin
@@ -34,6 +36,18 @@ public class ToDoController {
             return ResponseEntity.status(HttpStatus.CREATED).body("ToDo has been updated successfully created");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update ToDO");
+        }
+    }
+
+    @GetMapping("/searchById/{id}")
+    public ResponseEntity<ToDo> searchById(@PathVariable Long id) {
+        Optional<ToDo> searched = toDoService.searchById(id);
+
+        if (searched.isPresent()) {
+            ToDo toDo = searched.get();
+            return ResponseEntity.ok(toDo);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }

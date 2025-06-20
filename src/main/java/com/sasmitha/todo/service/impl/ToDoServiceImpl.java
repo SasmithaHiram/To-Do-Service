@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,12 +33,12 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public ToDo searchById(Long id) {
-        return null;
+    public Optional<ToDo> searchById(Long id) {
+        return toDoRepository.findById(id).map(toDoEntity -> modelMapper.map(toDoEntity, ToDo.class));
     }
 
     @Override
-    public ToDo searchByName(String name) {
+    public ToDo searchByName(String title) {
         return null;
     }
 
