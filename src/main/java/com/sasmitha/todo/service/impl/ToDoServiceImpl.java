@@ -35,12 +35,22 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public Optional<ToDo> searchById(Long id) {
-        return toDoRepository.findById(id).map(toDoEntity -> modelMapper.map(toDoEntity, ToDo.class));
+        if (id == null) {
+            throw new InvalidInputException("Id cannot be null");
+        }
+        return toDoRepository.findById(id).map(toDoEntity -> modelMapper.map(toDoEntity, ToDo.class)).or(() -> {
+            throw new ToDoNotFoundException("No ToDo found with id: " +id);
+        });
     }
 
     @Override
     public Optional<ToDo> searchByTitle(String title) {
-        return toDoRepository.findByTitle(title).map(toDoEntity -> modelMapper.map(toDoEntity, ToDo.class));
+        if (title.isEmpty() || title.isBlank()) {
+            throw new InvalidInputException("Title cannot be null or blank");
+        }
+        return toDoRepository.findByTitle(title).map(toDoEntity -> modelMapper.map(toDoEntity, ToDo.class)).or(() -> {
+            throw new ToDoNotFoundException("No ToDo found with title: " +title);
+        });
     }
 
     @Override
@@ -88,9 +98,7 @@ public class ToDoServiceImpl implements ToDoService {
 
         ArrayList<ToDo> toDos = new ArrayList<>();
 
-        toDoEntities.forEach(toDoEntity -> {
-            toDos.add(modelMapper.map(toDoEntity, ToDo.class));
-        });
+        toDoEntities.forEach(toDoEntity -> toDos.add(modelMapper.map(toDoEntity, ToDo.class)));
         return toDos;
     }
 }
