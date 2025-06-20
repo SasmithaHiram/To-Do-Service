@@ -12,9 +12,7 @@ import java.time.LocalDateTime;
 @ToString
 public class ToDo {
     private Long id;
-    private String name;
+    private String title;
     private String description;
     private ToDoStatus toDoStatus;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
 }
