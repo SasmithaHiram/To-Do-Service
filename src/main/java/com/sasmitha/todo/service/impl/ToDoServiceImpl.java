@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -42,7 +43,24 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public boolean update(ToDo toDo) {
-        return false;
+        if (toDo == null || toDo.getId() == null) {
+            return false;
+        }
+
+        ToDoEntity existing = toDoRepository.findById(toDo.getId()).orElse(null);
+
+        if (existing == null) {
+            return false;
+        }
+
+        existing.setTitle(toDo.getTitle());
+        existing.setDescription(toDo.getDescription());
+        existing.setToDoStatus(toDo.getToDoStatus());
+        existing.setUpdateAt(LocalDateTime.now());
+
+        toDoRepository.save(existing);
+
+        return true;
     }
 
     @Override

@@ -24,6 +24,16 @@ public class ToDoController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create ToDO");
         }
+    }
 
+    @PutMapping("/update")
+    public ResponseEntity<String> update(@Valid @RequestBody ToDo toDo) {
+        boolean isUpdated = toDoService.update(toDo);
+
+        if (isUpdated) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("ToDo has been updated successfully created");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update ToDO");
+        }
     }
 }
