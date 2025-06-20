@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ToDoService {
     boolean create(ToDo toDo);
     Optional<ToDo> searchById(Long id);
-    ToDo searchByName(String title);
+    Optional<ToDo> searchByTitle(String title);
     boolean update(ToDo toDo);
     boolean delete(Long id);
     List<ToDo> getAll();

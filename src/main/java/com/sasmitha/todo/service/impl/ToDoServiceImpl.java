@@ -2,6 +2,7 @@ package com.sasmitha.todo.service.impl;
 
 import com.sasmitha.todo.dto.ToDo;
 import com.sasmitha.todo.entity.ToDoEntity;
+import com.sasmitha.todo.exception.ToDoNotFoundException;
 import com.sasmitha.todo.repository.ToDoRepository;
 import com.sasmitha.todo.service.ToDoService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +40,8 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public ToDo searchByName(String title) {
-        return null;
+    public Optional<ToDo> searchByTitle(String title) {
+        return toDoRepository.findByTitle(title).map(toDoEntity -> modelMapper.map(toDoEntity, ToDo.class));
     }
 
     @Override
@@ -66,11 +68,30 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public boolean delete(Long id) {
+        if (id==null) {
+            return false;
+        }
+
+        if (toDoRepository.existsById(id)) {
+            toDoRepository.deleteById(id);
+            return true;
+        }
         return false;
     }
 
     @Override
-    public List<ToDo> getAll() {
-        return List.of();
+    public List<ToDo> getAll() throws ToDoNotFoundException {
+        List<ToDoEntity> toDoEntities = toDoRepository.findAll();
+
+        if (toDoEntities.isEmpty()) {
+            throw new ToDoNotFoundException("No ToDos found");
+        }
+
+        ArrayList<ToDo> toDos = new ArrayList<>();
+
+        toDoEntities.forEach(toDoEntity -> {
+            toDos.add(modelMapper.map(toDoEntity, ToDo.class));
+        });
+        return toDos;
     }
 }
