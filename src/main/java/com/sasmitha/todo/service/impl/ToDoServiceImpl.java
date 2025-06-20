@@ -1,14 +1,23 @@
 package com.sasmitha.todo.service.impl;
 
+import com.sasmitha.todo.config.ModelMapper;
 import com.sasmitha.todo.dto.ToDo;
+import com.sasmitha.todo.repository.ToDoRepository;
 import com.sasmitha.todo.service.ToDoService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class ToDoServiceImpl implements ToDoService {
+    private final ToDoRepository toDoRepository;
+    private final ModelMapper modelMapper;
+
     @Override
-    public boolean persist(ToDo toDo) {
-        return false;
+    public ToDo create(ToDo toDo) {
+        return null;
     }
 
     @Override
